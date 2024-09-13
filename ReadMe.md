@@ -39,6 +39,7 @@ Regras de Negócio:
 O e-mail deve ser único e seguir o formato correto.
 A senha deve seguir as regras mínimas de segurança: ao menos 8 caracteres, com letras e números.
 Não é possível cadastrar mais de um usuário com o mesmo e-mail.
+
 Dashboard do Guia (/dashboard-guide):
 Atributos exibidos:
 Quantidade de passeios cadastrados: Número de passeios criados pelo guia.
