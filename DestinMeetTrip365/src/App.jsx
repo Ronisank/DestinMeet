@@ -1,19 +1,19 @@
-import { useState } from 'react'
+import { RouterProvider } from 'react-router-dom'
 import reactLogo from '../favicon_w3cub/Logo-DestinMeet-img.png'
 import './App.css'
-import ListTours from './pages/ListTours/ListTours'
+import { AuthProvider } from './contexts/Auth'
+import AppRoutes from './Routes/Routes'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-     <img src={reactLogo} className="App-logo" alt="logo" />
-     {/* <Login /> */}
-     {/* <Register /> */}
-     <ListTours />
+      <img src={reactLogo} className="App-logo" alt="logo" />
+      <AuthProvider>
+        <RouterProvider router={AppRoutes} />
+      </AuthProvider>
     </>
-  )
+  );
 }
 
 export default App

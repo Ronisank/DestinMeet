@@ -7,7 +7,7 @@ import Tables from "../../components/Tables/Tables";
 export default function ListTours() {
     return (
         <div>
-        <h1>ListTours</h1>
+        <h1>Lista de Passeios</h1>
         <Tables />
         </div>
     );
