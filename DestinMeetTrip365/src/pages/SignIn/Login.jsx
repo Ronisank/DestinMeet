@@ -11,7 +11,7 @@ export default function Login() {
     try {
       const isSucess = await signIn(data);
       if (isSucess) {
-        navigate("/dashboard");
+        navigate("/dashboard-guide");
       } else {
         alert("Usuário ou senha inválidos");
       }
