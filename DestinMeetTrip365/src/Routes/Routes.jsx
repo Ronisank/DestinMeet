@@ -4,6 +4,7 @@ import DashboardGuide from "../pages/Dashboard/DashboardGuide";
 import ListTours from "../pages/ListTours/ListTours";
 import Login from "../pages/SignIn/Login";
 import Register from "../pages/SignUp/Register";
+import TourDetail from "../pages/TourDetail/TourDetail";
 import TourRegistration from "../pages/TourRegistration/TourRegistration";
 
 export const AppRoutes = createBrowserRouter([
@@ -34,7 +35,11 @@ export const AppRoutes = createBrowserRouter([
       // {
       //     path:"Booking",
       //     element: <Booking />
-      // }
+      // },
+      {
+        path: "tourDetail/:id",
+        element: <TourDetail />,
+      }
     ],
   },
 ]);

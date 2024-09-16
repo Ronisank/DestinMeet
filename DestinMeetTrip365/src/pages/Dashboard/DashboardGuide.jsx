@@ -7,7 +7,7 @@ export default function DashboardGuide() {
   const [passeios, setPasseios] = useState([]);
 
   useEffect(() => {
-    api("/passeios").then((response) => {
+    api("/tour").then((response) => {
       setPasseios(response.data);
     });
   }, []);
