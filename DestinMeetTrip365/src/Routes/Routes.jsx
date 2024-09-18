@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { PrivateRoute } from "../components/PrivateRoute/PrivateRoute";
+import Booking from "../pages/Booking/Booking";
 import DashboardGuide from "../pages/Dashboard/DashboardGuide";
 import ListTours from "../pages/ListTours/ListTours";
 import Login from "../pages/SignIn/Login";
@@ -32,10 +33,10 @@ export const AppRoutes = createBrowserRouter([
           path: "tour-registration",
           element: <TourRegistration />,
       },
-      // {
-      //     path:"Booking",
-      //     element: <Booking />
-      // },
+      {
+          path:"booking",
+          element: <Booking />
+      },
       {
         path: "tourDetail/:id",
         element: <TourDetail />,

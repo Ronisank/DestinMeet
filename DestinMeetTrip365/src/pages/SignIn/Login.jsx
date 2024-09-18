@@ -11,7 +11,12 @@ export default function Login() {
     try {
       const isSucess = await signIn(data);
       if (isSucess) {
-        navigate("/dashboard-guide");
+        const { user } = await signIn(data);
+        if (user.type_user === "turista") {
+          navigate("/dashboard-guide/tours");
+        } else if (user.type_user === "guia") {
+          navigate("/dashboard-guide");
+        }
       } else {
         alert("Usuário ou senha inválidos");
       }
@@ -29,7 +34,6 @@ export default function Login() {
       return false;
     }
   }
-
   return (
     <div>
       <h1>Login</h1>

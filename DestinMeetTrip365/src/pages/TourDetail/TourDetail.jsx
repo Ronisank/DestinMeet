@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { Form } from "../../components/Form/Form";
 import { SideBar } from "../../components/Sidebar/Sidebar";
+import Tables from "../../components/Tables/Tables";
 import { useAuth } from "../../contexts/Auth";
 import { api } from "../../services/api";
 
@@ -12,6 +13,7 @@ export default function TourDetail() {
   const [tour, setTour] = useState(null);
   const [isGuide, setIsGuide] = useState(false);
   const { user } = useAuth();
+  const [passeios, setPasseios] = useState([]);
 
   async function updateTour(data) {
     try {
@@ -51,7 +53,21 @@ export default function TourDetail() {
       console.error("Erro ao excluir o passeio:", error);
     }
   }
-
+  useEffect(() => {
+    const dataAxios = async () => {
+      try {
+        const response = await api("/tour", { method: "GET" });
+        setPasseios(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar Passeios: ", error);
+      }
+    };
+    dataAxios();
+  }
+  , []);
+  function bookingTour() {
+    navigate(`/dashboard-guide/booking/${item.id}`);
+  }
   // Função para reservar o passeio (somente para turistas)
   async function reserveTour() {
     try {
@@ -87,6 +103,7 @@ export default function TourDetail() {
           ) : (
             // Renderiza o botão de reserva se o usuário for um turista
             <div>
+              <Tables passeios={passeios} bookingTour={bookingTour}/>
               <button onClick={reserveTour}>Reservar Passeio</button>
             </div>
           )}

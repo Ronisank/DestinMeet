@@ -10,6 +10,7 @@ import { api } from "../../services/api";
 export default function ListTours() {
   const [passeios, setPasseios] = useState([]);
   const [guias, setGuias] = useState([]);
+  const [turista, setTurista] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,11 +35,20 @@ export default function ListTours() {
   function editTour(id) {
     navigate(`/dashboard-guide/tourDetail/${id}`);
   }
+  function bookingTour(id) {
+    navigate(`/dashboard-guide/booking/${id}`);
+  }
   return (
     <div>
       <SideBar />
       <h1>Lista de Passeios</h1>
-      <Tables passeios={passeios} guias={guias} editTour={editTour} />
+      <Tables
+        passeios={passeios}
+        guias={guias}
+        editTour={editTour}
+        turista={turista}
+        bookingTour={bookingTour}
+      />
     </div>
   );
 }

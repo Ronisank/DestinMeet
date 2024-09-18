@@ -1,7 +1,12 @@
 import React from "react";
 import "./Table.css";
 
-export default function Tables({ passeios, guias, editTour }) {
+export default function Tables({
+  passeios,
+  guias,
+  editTour,
+  bookingTour
+}) {
   return (
     <div>
       <table className="table-tours">
@@ -18,11 +23,10 @@ export default function Tables({ passeios, guias, editTour }) {
         <tbody>
           {passeios.map((item) => {
             const guia = guias.find((guia) => guia.id === item.userId);
-            // console.log(guia);
             return (
               <tr
                 key={item.id}
-                onClick={() => editTour(item.id)}
+                onClick={() => editTour(item.id) || bookingTour(item.id)}
                 style={{ cursor: "pointer" }}
               >
                 <td>{item.name}</td>

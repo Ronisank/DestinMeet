@@ -13,12 +13,11 @@ export function AuthProvider({ children }) {
     return user ? JSON.parse(user) : null;
   });
 
-  async function signIn({ email, password }) {
+  async function signIn({ email, password, type_user }) {
     try {
-      const response = await api(`/user?email=${email}&password=${password}`);
+      const response = await api(`/user?email=${email}&password=${password}&type_user=${type_user}`);
 
       const data = response.data;
-      console.log("dados recebidos: ", data);
 
       if (data.length === 0) {
         return false;
@@ -32,7 +31,7 @@ export function AuthProvider({ children }) {
       if (usuario) {
         setUser(usuario);
         localStorage.setItem("DestinMeetTrip365", JSON.stringify(usuario));
-        return true;
+        return {user: usuario};
       } else {
         return false;
       }
