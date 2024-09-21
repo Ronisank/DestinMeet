@@ -8,7 +8,7 @@
 }
 .App-logo{
   border-radius: 50%;
-  width: 250px;
+  width: 150px;
 }
 h1{
   font-size: 2em;
@@ -50,4 +50,26 @@ h1{
 }
 .btn-form:hover{
   background-color: #0056b3;
+}
+.sidebarContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sidebar na lateral */
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 250px; /* Defina uma largura fixa para a sidebar */
+  height: 100%;
+  background-color: #f4f4f4; /* Cor de fundo da sidebar */
+  position: fixed; /* Mantém a sidebar fixa na lateral */
+  left: 0;
+  top: 0;
 }

@@ -13,7 +13,7 @@ export default function Login() {
       if (isSucess) {
         const { user } = await signIn(data);
         if (user.type_user === "turista") {
-          navigate("/dashboard-guide/tours");
+          navigate("/dashboard-guide");
         } else if (user.type_user === "guia") {
           navigate("/dashboard-guide");
         }

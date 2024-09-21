@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Form } from "../../components/Form/Form";
 import { SideBar } from "../../components/Sidebar/Sidebar";
-import Tables from "../../components/Tables/Tables";
 import { useAuth } from "../../contexts/Auth";
 import { api } from "../../services/api";
 
@@ -14,6 +13,9 @@ export default function TourDetail() {
   const [isGuide, setIsGuide] = useState(false);
   const { user } = useAuth();
   const [passeios, setPasseios] = useState([]);
+  const [guias, setGuias] = useState([]);
+  const navigate = useNavigate();
+  
 
   async function updateTour(data) {
     try {
@@ -65,12 +67,20 @@ export default function TourDetail() {
     dataAxios();
   }
   , []);
-  function bookingTour() {
-    navigate(`/dashboard-guide/booking/${item.id}`);
+  async function bookingTour() {
+    try {
+      const response = await api(`/booking`, { method: "GET" });
+      setPasseios(response.data);
+      navigate(`/dashboard-guide/booking`);
+    } catch (error) {
+      console.error("Erro ao buscar Passeios: ", error);
+    }
   }
   // Função para reservar o passeio (somente para turistas)
   async function reserveTour() {
     try {
+      const response = await api(`/tour/${id}`, { method: "GET" });
+      setPasseios(response.data);
       await api(`/booking`, {
         method: "POST",
         data: { tourId: id, userId: user.id },
@@ -80,10 +90,23 @@ export default function TourDetail() {
       console.error("Erro ao reservar o passeio:", error);
     }
   }
+    useEffect(() => {
+      async function fetchGuides() {
+        try {
+          const guidesResponse = await api("/user", { method: "GET" });
+          setGuias(guidesResponse.data);
+        } catch (error) {
+          console.error("Erro ao buscar guias:", error);
+        }
+      }
+      fetchGuides();
+    }, []);
+  const guia = tour && guias.find((guia) => guia.id === tour.userId);
+
   return (
     <div>
-        <SideBar/>
-      <h1>TourDetail</h1>
+      <SideBar />
+      <h1>Detalhes do Passeio</h1>
       {tour ? (
         <div>
           {/* Renderiza o formulário de edição se o usuário for o guia */}
@@ -103,8 +126,16 @@ export default function TourDetail() {
           ) : (
             // Renderiza o botão de reserva se o usuário for um turista
             <div>
-              <Tables passeios={passeios} bookingTour={bookingTour}/>
+              <ul>
+                <li>Nome: {tour.name}</li>
+                <li>Descrição: {tour.description}</li>
+                <li>Local: {tour.local}</li>
+                <li>Preço: {tour.price}</li>
+                <li>Data: {tour.date}</li>
+                <li>Guia: {guia ? guia.name : "Guia não encontrado"}</li>
+              </ul>
               <button onClick={reserveTour}>Reservar Passeio</button>
+              <button onClick={bookingTour}>Ver Reservas</button>
             </div>
           )}
         </div>

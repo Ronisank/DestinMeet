@@ -3,9 +3,9 @@ import "./Table.css";
 
 export default function Tables({
   passeios,
-  guias,
+  guias = [],
   editTour,
-  bookingTour
+  bookings = [],
 }) {
   return (
     <div>
@@ -26,7 +26,7 @@ export default function Tables({
             return (
               <tr
                 key={item.id}
-                onClick={() => editTour(item.id) || bookingTour(item.id)}
+                onClick={() => editTour(item.id) }
                 style={{ cursor: "pointer" }}
               >
                 <td>{item.name}</td>
@@ -43,3 +43,4 @@ export default function Tables({
     </div>
   );
 }
+//|| bookingTour(item.id)

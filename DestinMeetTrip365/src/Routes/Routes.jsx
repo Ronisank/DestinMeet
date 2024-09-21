@@ -7,6 +7,7 @@ import Login from "../pages/SignIn/Login";
 import Register from "../pages/SignUp/Register";
 import TourDetail from "../pages/TourDetail/TourDetail";
 import TourRegistration from "../pages/TourRegistration/TourRegistration";
+import TourReviews from "../pages/TourReviews/TourReviews";
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const AppRoutes = createBrowserRouter([
       {
         path: "tourDetail/:id",
         element: <TourDetail />,
+      },
+      {
+        path: "tourReviews/:id",
+        element: <TourReviews />,
       }
     ],
   },
