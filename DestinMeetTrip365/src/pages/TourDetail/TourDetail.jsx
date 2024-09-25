@@ -119,9 +119,15 @@ export default function TourDetail() {
                 reset={reset}
                 updateTour={updateTour}
                 tourData={tour}
-                customButton={<button type="btn-custom">Atualizar</button>}
+                customButton={
+                  <button type="btn-custom" className="btn-form">
+                    Atualizar
+                  </button>
+                }
               />
-              <button onClick={deleteTour}>Excluir Passeio</button>
+              <button onClick={deleteTour} className="btn-form">
+                Excluir Passeio
+              </button>
             </div>
           ) : (
             // Renderiza o botão de reserva se o usuário for um turista
@@ -134,8 +140,12 @@ export default function TourDetail() {
                 <li>Data: {tour.date}</li>
                 <li>Guia: {guia ? guia.name : "Guia não encontrado"}</li>
               </ul>
-              <button onClick={reserveTour}>Reservar Passeio</button>
-              <button onClick={bookingTour}>Ver Reservas</button>
+              <button onClick={reserveTour} className="btn-form">
+                Reservar Passeio
+              </button>
+              <button onClick={bookingTour} className="btn-form">
+                Ver Reservas
+              </button>
             </div>
           )}
         </div>

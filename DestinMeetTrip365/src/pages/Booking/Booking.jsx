@@ -67,10 +67,16 @@ export default function Booking() {
               <p>Data: {passeio.date}</p>
               <p>Guia: {guia ? guia.name : "Guia não encontrado"}</p>
               <p>{booking.status}</p>
-              <button onClick={() => deleteBooking(booking.id)}>
+              <button
+                onClick={() => deleteBooking(booking.id)}
+                className="btn-form"
+              >
                 Cancelar Reserva
               </button>
-              <button onClick={() => reviewTour(booking.id)}>
+              <button
+                onClick={() => reviewTour(booking.id)}
+                className="btn-form"
+              >
                 Avaliar Passeio
               </button>
             </li>
