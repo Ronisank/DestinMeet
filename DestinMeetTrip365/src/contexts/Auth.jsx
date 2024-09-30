@@ -15,23 +15,37 @@ export function AuthProvider({ children }) {
 
   async function signIn({ email, password, type_user }) {
     try {
-      const response = await api(`/user?email=${email}&password=${password}&type_user=${type_user}`);
-
-      const data = response.data;
-
-      if (data.length === 0) {
+      const response = await api("/Login", {
+        method: "POST",
+        data: {
+          email,
+          password,
+          type_user,
+        },
+      });
+      if (response && response.data) {
+        const { token } = response.data;
+        localStorage.setItem("token", token);
+      }
+      const responseData = await api(
+        `/user?email=${email}&password=${password}&type_user=${type_user}`,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (responseData.length === 0) {
         return false;
       }
-      const usuario = data.find(
-        (user) =>
-          user.email.trim().toLowerCase() === email.trim().toLowerCase() &&
-          user.password === password
+      const usuario = responseData.data.find(
+        (user) => user.email.trim().toLowerCase() === email.trim().toLowerCase()
       );
 
       if (usuario) {
         setUser(usuario);
         localStorage.setItem("DestinMeetTrip365", JSON.stringify(usuario));
-        return {user: usuario};
+        return { user: usuario };
       } else {
         return false;
       }
@@ -42,7 +56,8 @@ export function AuthProvider({ children }) {
   }
   function signOut() {
     setUser(null);
-    localStorage.removeItem("DestinMeetTrip365");
+    localStorage.removeItem("DestinMeetTrip365", JSON.stringify(user));
+    localStorage.removeItem("token");
   }
 
   return (
