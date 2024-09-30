@@ -9,34 +9,38 @@ A nota e o comentário serão exibidos para outros usuários que visualizaram o 
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../../src/App.css";
 import { SideBar } from "../../components/Sidebar/Sidebar";
 import { useAuth } from "../../contexts/Auth";
-import { api } from "../../services/api";
+import useAxios from "../../hooks/useAxios";
 
 export default function TourReviews() {
   const { id } = useParams();
   const [bookings, setBookings] = useState([]);
   const [guias, setGuias] = useState([]);
-  const [passeios, setPasseios] = useState(null);
+  const [passeio, setPasseios] = useState(null);
   const { user } = useAuth();
-  const { register, handleSubmit, formState, setValue, reset, watch } =
-    useForm();
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const dataAxios = async () => {
       try {
-        const responseTours = await api(`/tour/${id}`, { method: "GET" });
-        setPasseios(responseTours.data);
+        const responseBooking = await useAxios(`/booking/${id}`, {
+          method: "GET",
+        });
+        const bookingsData = responseBooking.data;
+        setBookings(bookingsData);
 
-        const responseGuides = await api("/user", { method: "GET" });
+        const idTour = bookingsData.tourId;
+
+        const responseGuides = await useAxios("/user", { method: "GET" });
         setGuias(responseGuides.data);
 
-        const responseBooking = await api(`/booking/${id}`, { method: "GET" });
-        const bookingsData = Array.isArray(responseBooking.data)
-          ? responseBooking.data
-          : [responseBooking.data];
-        setBookings(bookingsData);
+        const responseTours = await useAxios(`/tour/${idTour}`, { method: "GET" });
+        setPasseios(responseTours.data);
+
       } catch (error) {
         console.error("Erro ao buscar Reservas: ", error);
       }
@@ -44,16 +48,26 @@ export default function TourReviews() {
     dataAxios();
   }, [id]);
 
-  async function reviewNotes() {
+  const reviewNotes = async (data) => {
+     if (!passeio) {
+       alert("Passeio ainda não carregado. Tente novamente.");
+       return;
+     }
     try {
-      const response = await api(`/tour/${id}`, { method: "GET" });
+      const response = await useAxios(`/tour/${id}`, { method: "GET" });
       setPasseios(response.data);
 
-      await api(`/Review`, {
+      await useAxios(`/Review`, {
         method: "POST",
-        data: { tourId: id, userId: user.id, note: watch("note"), comment: watch("comment") },
+        data: {
+          tourId: passeio.id,
+          userId: user.id,
+          note: data.note,
+          comment: data.comment,
+        },
       });
       alert("Avaliação realizada com sucesso!");
+      navigate("/dashboard-guide/booking");
     } catch (error) {
       console.error("Erro ao avaliar o passeio:", error);
     }
@@ -66,14 +80,14 @@ export default function TourReviews() {
     <div>
       <SideBar />
       <h1>Avaliação do passeio</h1>
-      {passeios && (
+      {passeio && (
         <ul>
           <li>
-            <p>Nome: {passeios.name}</p>
-            <p>Descrição: {passeios.description}</p>
-            <p>Local: {passeios.local}</p>
-            <p>Data: {new Date(passeios.date).toLocaleDateString()}</p>
-            <p>Guia: {findGuideForTour(passeios.userId)?.name}</p>
+            <p>Nome: {passeio.name}</p>
+            <p>Descrição: {passeio.description}</p>
+            <p>Local: {passeio.local}</p>
+            <p>Data: {new Date(passeio.date).toLocaleDateString()}</p>
+            <p>Guia: {findGuideForTour(passeio.userId)?.name}</p>
           </li>
         </ul>
       )}

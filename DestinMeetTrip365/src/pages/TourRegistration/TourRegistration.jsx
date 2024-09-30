@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Form } from "../../components/Form/Form";
 import { SideBar } from "../../components/Sidebar/Sidebar";
 import { useAuth } from "../../contexts/Auth";
-import { api } from "../../services/api";
+import useAxios from "../../hooks/useAxios";
 
 export default function TourRegistration() {
   const [tours, setTours] = useState([]);
@@ -12,7 +12,7 @@ export default function TourRegistration() {
   useEffect(() => {
     const dataAxios = async () => {
       try {
-        const response = await api("/tour", { method: "GET" });
+        const response = await useAxios("/tour", { method: "GET" });
         setTours(response.data);
       } catch (error) {
         console.error("Erro ao buscar Passeios: ", error);
@@ -32,7 +32,7 @@ export default function TourRegistration() {
         userId: idUser.user.id,
       };
       console.log(tourData, "console de resposta do idUser");
-      const response = await api("/Tour", {
+      const response = await useAxios("/Tour", {
         method: "POST",
         data: tourData,
       });
