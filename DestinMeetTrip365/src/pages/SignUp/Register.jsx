@@ -1,18 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../services/api";
+import useAxios from "../../hooks/useAxios";
 
 export default function Register() {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
 
   async function onSubmit(data) {
+    // const token = localStorage.getItem("token");
     try {
-      const response = api("/user", {
-        method: "POST",
-        data: data, // Em vez de 'body', usamos 'data' no axios
-      });
+      const response = await useAxios("/user", 
+        { method: "POST", data}); // Em vez de 'body', usamos 'data' no axios
       alert("Usuário cadastrado com sucesso", response.data);
       navigate("/");
     } catch (error) {

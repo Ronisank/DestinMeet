@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../src/App.css";
 import { SideBar } from "../../components/Sidebar/Sidebar";
-import { api } from "../../services/api";
+import useAxios from "../../hooks/useAxios";
 
 export default function Booking() {
   const [passeios, setPasseios] = useState([]);
@@ -10,17 +10,19 @@ export default function Booking() {
   const [bookings, setBookings] = useState([]);
   const [tour, setTour] = useState(null);
   const navigate = useNavigate();
+  const userid = localStorage.getItem("DestinMeetTrip365");
+  const dataId = JSON.parse(userid);
 
   useEffect(() => {
     const dataAxios = async () => {
       try {
-        const responseTours = await api("/tour", { method: "GET" });
+        const responseTours = await useAxios("/tour", { method: "GET" });
         setPasseios(responseTours.data);
 
-        const responseGuides = await api("/user", { method: "GET" });
+        const responseGuides = await useAxios("/user", { method: "GET" });
         setGuias(responseGuides.data);
 
-        const responseBooking = await api(`/booking`, { method: "GET" });
+        const responseBooking = await useAxios(`/booking`, { method: "GET" });
         setBookings(responseBooking.data);
       } catch (error) {
         console.error("Erro ao buscar Passeios: ", error);
@@ -29,15 +31,18 @@ export default function Booking() {
     dataAxios();
   }, []);
   const tourReservation = passeios.filter((passeio) =>
-    bookings.some((booking) => booking.tourId === passeio.id)
+    bookings.some(
+      (booking) => booking.tourId === passeio.id && booking.userId === dataId.id
+    )
   );
+
   const findGuideForTour = (userId) => {
     return guias.find((guia) => guia.id === userId); // Encontra o guia pelo guideId
   };
 
   async function deleteBooking(id) {
     try {
-      const response = await api(`/booking/${id}`, { method: "DELETE" });
+      const response = await useAxios(`/booking/${id}`, { method: "DELETE" });
       if (response.status === 200) {
         const newBookings = bookings.filter((b) => b.id !== id);
         setBookings(newBookings);
@@ -50,7 +55,7 @@ export default function Booking() {
   function reviewTour(id) {
     navigate(`/dashboard-guide/tourReviews/${id}`);
   }
-  
+
   return (
     <div>
       <SideBar className="sidebarContainer" />

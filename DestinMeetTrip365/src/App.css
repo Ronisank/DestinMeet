@@ -51,14 +51,6 @@ h1{
 .btn-form:hover{
   background-color: #0056b3;
 }
-.sidebarContainer{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
-}
 
 /* Sidebar na lateral */
 .sidebarContainer {
@@ -66,10 +58,48 @@ h1{
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 250px; /* Defina uma largura fixa para a sidebar */
+  width: 200px; /* Defina uma largura fixa para a sidebar */
   height: 100%;
-  background-color: #f4f4f4; /* Cor de fundo da sidebar */
+  background-color: #85b1a2; /* Cor de fundo da sidebar */
   position: fixed; /* Mantém a sidebar fixa na lateral */
   left: 0;
   top: 0;
+}
+.logout{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background-color:transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 50px;
+}
+.user{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  background-color:transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  margin-top: 5px;
+}
+.home{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  background-color:transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  margin-top: 5px;
 }

@@ -1,6 +1,7 @@
 import { HomeIcon, LogOut, MapPinPlus, Table2Icon, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
+import reactLogo from "../../../favicon_w3cub/Logo-DestinMeet-img.png";
 import { useAuth } from "../../contexts/Auth";
 
 export function SideBar() {
@@ -18,6 +19,7 @@ export function SideBar() {
 
   return user ? (
     <div className="sidebarContainer">
+      <img src={reactLogo} className="App-logo" alt="logo" />
       <div className="user">
         <User size={28} className="user" />
         <span>Olá, {user.name}</span>
@@ -35,22 +37,28 @@ export function SideBar() {
         </Link>
       </div>
       <div className="exit">
-      <div className="locations">
-            {isGuide && ( // Verifica se o usuário é um guia antes de exibir o botão de cadastro
-          <Link to={"/dashboard-guide/tour-registration"} style={{ textDecoration: "none" }}>
-            <MapPinPlus size={28} className="mappin" />
-            <span>Cadastro Passeios</span>
-          </Link>
-        )}      
-      </div>
-      <div className="locations">
-            {isTourist && ( // Verifica se o usuário é um guia antes de exibir o botão de cadastro
-          <Link to={"/dashboard-guide/booking"} style={{ textDecoration: "none" }}>
-            <MapPinPlus size={28} className="mappin" />
-            <span>Reservas de Passeios</span>
-          </Link>
-        )}      
-      </div>
+        <div className="locations">
+          {isGuide && ( // Verifica se o usuário é um guia antes de exibir o botão de cadastro
+            <Link
+              to={"/dashboard-guide/tour-registration"}
+              style={{ textDecoration: "none" }}
+            >
+              <MapPinPlus size={28} className="mappin" />
+              <span>Cadastro Passeios</span>
+            </Link>
+          )}
+        </div>
+        <div className="locations">
+          {isTourist && ( // Verifica se o usuário é um guia antes de exibir o botão de cadastro
+            <Link
+              to={"/dashboard-guide/booking"}
+              style={{ textDecoration: "none" }}
+            >
+              <MapPinPlus size={28} className="mappin" />
+              <span>Reservas de Passeios</span>
+            </Link>
+          )}
+        </div>
         <button onClick={signOut} className="logout">
           <LogOut size={28} /> Sair
         </button>

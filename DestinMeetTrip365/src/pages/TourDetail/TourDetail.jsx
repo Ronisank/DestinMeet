@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Form } from "../../components/Form/Form";
 import { SideBar } from "../../components/Sidebar/Sidebar";
 import { useAuth } from "../../contexts/Auth";
-import { api } from "../../services/api";
+import useAxios from "../../hooks/useAxios";
 
 export default function TourDetail() {
   const { id } = useParams();
@@ -19,7 +19,12 @@ export default function TourDetail() {
 
   async function updateTour(data) {
     try {
-      const response = await api(`/tour/${id}`, {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Você precisa estar logado para atualizar o passeio");
+        return;
+      }
+      const response = await useAxios(`/tour/${id}`, {
         method: "PUT",
         data: data,
       });
@@ -32,7 +37,7 @@ export default function TourDetail() {
   useEffect(() => {
     async function fetchTourDetails() {
       try {
-        const tourResponse = await api(`/tour/${id}`, { method: "GET" });
+        const tourResponse = await useAxios(`/tour/${id}`, { method: "GET" });
         setTour(tourResponse.data);
 
         // Verifica se o usuário logado é o guia que cadastrou o passeio
@@ -49,7 +54,7 @@ export default function TourDetail() {
   // Função para excluir o passeio (somente para o guia)
   async function deleteTour() {
     try {
-      await api(`/tour/${id}`, { method: "DELETE" });
+      await useAxios(`/tour/${id}`, { method: "DELETE" });
       alert("Passeio excluído com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir o passeio:", error);
@@ -58,7 +63,7 @@ export default function TourDetail() {
   useEffect(() => {
     const dataAxios = async () => {
       try {
-        const response = await api("/tour", { method: "GET" });
+        const response = await useAxios("/tour", { method: "GET" });
         setPasseios(response.data);
       } catch (error) {
         console.error("Erro ao buscar Passeios: ", error);
@@ -69,7 +74,7 @@ export default function TourDetail() {
   , []);
   async function bookingTour() {
     try {
-      const response = await api(`/booking`, { method: "GET" });
+      const response = await useAxios(`/booking`, { method: "GET" });
       setPasseios(response.data);
       navigate(`/dashboard-guide/booking`);
     } catch (error) {
@@ -79,9 +84,9 @@ export default function TourDetail() {
   // Função para reservar o passeio (somente para turistas)
   async function reserveTour() {
     try {
-      const response = await api(`/tour/${id}`, { method: "GET" });
+      const response = await useAxios(`/tour/${id}`, { method: "GET" });
       setPasseios(response.data);
-      await api(`/booking`, {
+      await useAxios(`/booking`, {
         method: "POST",
         data: { tourId: id, userId: user.id },
       });
@@ -93,7 +98,7 @@ export default function TourDetail() {
     useEffect(() => {
       async function fetchGuides() {
         try {
-          const guidesResponse = await api("/user", { method: "GET" });
+          const guidesResponse = await useAxios("/user", { method: "GET" });
           setGuias(guidesResponse.data);
         } catch (error) {
           console.error("Erro ao buscar guias:", error);

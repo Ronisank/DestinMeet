@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SideBar } from "../../components/Sidebar/Sidebar";
 import Tables from "../../components/Tables/Tables";
+import useAxios from "../../hooks/useAxios";
 import { api } from "../../services/api";
 
-export default function ListTours() {
+export default function ListTours(data) {
   const [passeios, setPasseios] = useState([]);
   const [guias, setGuias] = useState([]);
   const [turista, setTurista] = useState([]);
@@ -16,7 +17,17 @@ export default function ListTours() {
   useEffect(() => {
     const dataAxios = async () => {
       try {
-        const response = await api("/tour", { method: "GET" });
+        const token = localStorage.getItem("token");
+        if(!token){
+          throw new Error("Token não encontrado");
+        }
+        const response = await api("/tour", { 
+          headers: {
+            Authorization: `${token}`,
+
+          },
+          method: "GET" });
+
         setPasseios(response.data);
       } catch (error) {
         console.error("Erro ao buscar Passeios: ", error);
@@ -24,7 +35,8 @@ export default function ListTours() {
     };
 
     async function listGuide() {
-      const response = await api("/user", { method: "GET" });
+      const response = await useAxios("/user", { method: "GET" });
+      // const response = await api("/user", { method: "GET" });
       setGuias(response.data);
     }
 
